@@ -176,30 +176,7 @@ function App() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {produitsFiltres.map(p => (
               <div key={p.id} className="bg-white rounded shadow p-2">
-                {/* Image principale + panorama des autres images */}
-                <div className="mb-2">
-                  {/* Image principale */}
-                  <img src={p.images[0]} alt={p.nom} className="w-full h-32 object-cover rounded mb-1"/>
-                  
-                  {/* Panorama des autres images (si plus d'une image) */}
-                  {p.images.length > 1 && (
-                    <div className="flex gap-1 overflow-x-auto">
-                      {p.images.slice(1, 5).map((img, index) => (
-                        <img 
-                          key={index} 
-                          src={img} 
-                          alt={`${p.nom} ${index + 2}`} 
-                          className="w-12 h-12 object-cover rounded flex-shrink-0"
-                        />
-                      ))}
-                      {p.images.length > 5 && (
-                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600 flex-shrink-0">
-                          +{p.images.length - 5}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                <img src={p.images[0]} alt={p.nom} className="w-full h-32 object-cover rounded mb-1"/>
                 <h3 className="font-bold text-sm truncate">{p.nom}</h3>
                 <p className="text-orange-600 font-bold">${p.prix}</p>
                 <p className="text-xs text-gray-500">Stock: {p.stock}</p>
@@ -386,84 +363,11 @@ function AdminInterface({ produits, setProduits, onLogout }) {
   const [editingProduct, setEditingProduct] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Nouvelles variables pour fonctionnalités avancées
-  const [importData, setImportData] = useState("");
-  const [importUrl, setImportUrl] = useState("");
-  const [generatingDescription, setGeneratingDescription] = useState(false);
-  const [visitors, setVisitors] = useState(() => 
-    JSON.parse(localStorage.getItem("mirebVisitors") || "[]")
-  );
-
-  // Mise à jour automatique des leads et suivi des visiteurs
+  // Mise à jour automatique des leads
   useEffect(() => {
     const handleStorageChange = () => {
       setLeads(JSON.parse(localStorage.getItem("mirebLeads") || "[]"));
-      setVisitors(JSON.parse(localStorage.getItem("mirebVisitors") || "[]"));
     };
-    
-    // Enregistrer la visite actuelle avec vraie géolocalisation
-    const recordVisit = async () => {
-      try {
-        // Tentative de géolocalisation réelle
-        const position = await new Promise((resolve, reject) => {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-              timeout: 5000,
-              enableHighAccuracy: true
-            });
-          } else {
-            reject(new Error("Géolocalisation non supportée"));
-          }
-        });
-
-        // API de géolocalisation IP en backup
-        let locationInfo = "Localisation non disponible";
-        try {
-          const ipResponse = await fetch('https://ipapi.co/json/');
-          const ipData = await ipResponse.json();
-          locationInfo = `${ipData.city || 'Ville inconnue'}, ${ipData.country_name || 'Pays inconnu'} (${ipData.latitude || 0}, ${ipData.longitude || 0})`;
-        } catch (error) {
-          // Si GPS disponible, utiliser les coordonnées
-          if (position) {
-            locationInfo = `Coordonnées: ${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`;
-          }
-        }
-
-        const currentVisit = {
-          timestamp: new Date().toISOString(),
-          ip: "IP masquée", // Protection de la vie privée
-          location: locationInfo,
-          page: window.location.pathname,
-          coords: position ? {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-            accuracy: position.coords.accuracy
-          } : null,
-          userAgent: navigator.userAgent.substring(0, 80) + "..."
-        };
-
-        const existingVisitors = JSON.parse(localStorage.getItem("mirebVisitors") || "[]");
-        localStorage.setItem("mirebVisitors", JSON.stringify([...existingVisitors, currentVisit]));
-        setVisitors([...existingVisitors, currentVisit]);
-
-      } catch (error) {
-        // Fallback si géolocalisation échoue
-        const fallbackVisit = {
-          timestamp: new Date().toISOString(),
-          ip: "IP masquée",
-          location: "Localisation refusée ou indisponible",
-          page: window.location.pathname,
-          coords: null,
-          userAgent: navigator.userAgent.substring(0, 80) + "..."
-        };
-
-        const existingVisitors = JSON.parse(localStorage.getItem("mirebVisitors") || "[]");
-        localStorage.setItem("mirebVisitors", JSON.stringify([...existingVisitors, fallbackVisit]));
-        setVisitors([...existingVisitors, fallbackVisit]);
-      }
-    };
-
-    recordVisit();
     const interval = setInterval(handleStorageChange, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -556,112 +460,6 @@ function AdminInterface({ produits, setProduits, onLogout }) {
     });
   };
 
-  // Import de produits depuis plateforme e-commerce (JSON ou URL)
-  const importProducts = async () => {
-    try {
-      let data;
-      
-      if (importUrl.trim()) {
-        // Import par URL
-        const response = await fetch(importUrl);
-        if (!response.ok) throw new Error('Erreur lors du chargement de l\'URL');
-        data = await response.json();
-      } else if (importData.trim()) {
-        // Import par JSON
-        data = JSON.parse(importData);
-      } else {
-        alert("Veuillez fournir soit une URL soit des données JSON");
-        return;
-      }
-
-      const newProducts = Array.isArray(data) ? data : [data];
-      const processedProducts = newProducts.map((item, index) => ({
-        id: Date.now() + Math.random() + index,
-        nom: item.title || item.name || item.nom || "Produit sans nom",
-        prix: Number(item.price || item.prix || 0),
-        stock: Number(item.stock || item.inventory || item.quantity || 20),
-        categorie: item.category || item.categorie || CATEGORIES[0],
-        images: Array.isArray(item.images) ? item.images : 
-                item.image ? [item.image] : 
-                item.thumbnail ? [item.thumbnail] :
-                ["https://via.placeholder.com/600x400?text=No+Image"],
-        description: item.description || item.desc || item.body || "<p>Description à compléter</p>"
-      }));
-      
-      setProduits([...produits, ...processedProducts]);
-      setImportData("");
-      setImportUrl("");
-      alert(`✅ ${processedProducts.length} produit(s) importé(s) avec succès !`);
-    } catch (error) {
-      console.error("Erreur d'import:", error);
-      alert(`❌ Erreur d'import: ${error.message}\n\nVérifiez le format JSON ou l'URL`);
-    }
-  };
-
-  // Générateur de description IA avec API OpenAI réelle
-  const generateDescription = async () => {
-    if (!nom) {
-      alert("Veuillez d'abord saisir le nom du produit");
-      return;
-    }
-    
-    setGeneratingDescription(true);
-    
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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'
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content: "Tu es un expert en rédaction de descriptions produits e-commerce. Crée des descriptions attractives, détaillées et persuasives en HTML avec des balises <p>, <ul>, <li>, <b>. Utilise des émojis pour rendre plus attractif. La description doit être en français et faire environ 100-150 mots."
-            },
-            {
-              role: "user",
-              content: `Créé une description e-commerce professionnelle et attractive pour le produit suivant : "${nom}". Inclus les caractéristiques techniques probables, les avantages, et pourquoi l'acheter. Utilise du HTML avec des balises <p>, <ul>, <li>, <b> et des émojis.`
-            }
-          ],
-          max_tokens: 500,
-          temperature: 0.7
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const generatedDescription = data.choices[0].message.content;
-      
-      setDescription(generatedDescription);
-      setGeneratingDescription(false);
-      
-    } catch (error) {
-      console.error('Erreur OpenAI:', error);
-      setGeneratingDescription(false);
-      
-      // Fallback avec description intelligente locale
-      const productName = nom.toLowerCase();
-      let fallbackDescription = "";
-
-      if (productName.includes('phone') || productName.includes('iphone') || productName.includes('smartphone')) {
-        fallbackDescription = `<p><b>${nom}</b> - Smartphone dernière génération 📱</p><p>� <b>Caractéristiques :</b></p><ul><li>Écran OLED haute résolution</li><li>Processeur ultra-performant</li><li>Appareil photo professionnel avec IA</li><li>Batterie longue durée + charge rapide</li><li>Stockage sécurisé et généreux</li></ul><p>✨ Parfait pour productivité et divertissement !</p>`;
-      } else if (productName.includes('laptop') || productName.includes('ordinateur')) {
-        fallbackDescription = `<p><b>${nom}</b> - Ordinateur haute performance 💻</p><p>⚡ <b>Spécifications :</b></p><ul><li>Processeur dernière génération</li><li>RAM optimisée multitâche</li><li>SSD ultra-rapide</li><li>Écran HD couleurs fidèles</li><li>Design portable et élégant</li></ul><p>🎯 Idéal travail, études et loisirs !</p>`;
-      } else {
-        fallbackDescription = `<p><b>${nom}</b> - Produit de qualité supérieure ⭐</p><p>🎯 <b>Avantages :</b></p><ul><li>Qualité premium garantie</li><li>Design pensé utilisateur</li><li>Durabilité et fiabilité</li><li>Excellent rapport qualité-prix</li><li>Service client réactif</li></ul><p>💎 Choix intelligent pour votre quotidien !</p>`;
-      }
-      
-      setDescription(fallbackDescription);
-      alert("⚠️ API OpenAI indisponible, description générée en local");
-    }
-  };
-
   const handleDelete = id => setProduits(produits.filter(p => p.id !== id));
 
   const deleteLead = (index) => {
@@ -708,141 +506,6 @@ function AdminInterface({ produits, setProduits, onLogout }) {
       {/* Contenu onglet Produits */}
       {tab === "produits" && (
         <div className="p-4 grid gap-6">
-          {/* Statistiques des visiteurs */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-bold mb-4 text-gray-800">
-              <i className="fas fa-chart-bar mr-2 text-blue-500"></i>Statistiques des visiteurs
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="bg-blue-50 p-3 rounded">
-                <p className="text-sm text-gray-600">Total visiteurs</p>
-                <p className="text-2xl font-bold text-blue-600">{visitors.length}</p>
-              </div>
-              <div className="bg-green-50 p-3 rounded">
-                <p className="text-sm text-gray-600">Aujourd'hui</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {visitors.filter(v => new Date(v.timestamp).toDateString() === new Date().toDateString()).length}
-                </p>
-              </div>
-              <div className="bg-purple-50 p-3 rounded">
-                <p className="text-sm text-gray-600">Cette semaine</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {visitors.filter(v => {
-                    const visitDate = new Date(v.timestamp);
-                    const weekAgo = new Date();
-                    weekAgo.setDate(weekAgo.getDate() - 7);
-                    return visitDate >= weekAgo;
-                  }).length}
-                </p>
-              </div>
-            </div>
-            
-            <div className="max-h-64 overflow-y-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="p-2 text-left">Date/Heure</th>
-                    <th className="p-2 text-left">Localisation</th>
-                    <th className="p-2 text-left">Coordonnées</th>
-                    <th className="p-2 text-left">Page</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {visitors.slice(-10).reverse().map((visitor, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="p-2 text-xs">{new Date(visitor.timestamp).toLocaleString()}</td>
-                      <td className="p-2 text-xs">{visitor.location}</td>
-                      <td className="p-2 text-xs">
-                        {visitor.coords ? (
-                          <span className="text-green-600">
-                            {visitor.coords.lat.toFixed(4)}, {visitor.coords.lng.toFixed(4)}
-                          </span>
-                        ) : (
-                          <span className="text-gray-400">Non disponible</span>
-                        )}
-                      </td>
-                      <td className="p-2 text-xs">{visitor.page}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Import de produits */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-bold mb-4 text-gray-800">
-              <i className="fas fa-upload mr-2 text-indigo-500"></i>Import de produits
-            </h3>
-            
-            {/* Option 1: Import par URL */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">
-                <i className="fas fa-link mr-1 text-blue-500"></i>Importer depuis une URL (API)
-              </label>
-              <input
-                type="url"
-                value={importUrl}
-                onChange={(e) => setImportUrl(e.target.value)}
-                placeholder="https://api.example.com/products.json"
-                className="w-full p-3 border rounded-lg text-sm"
-              />
-              <div className="mt-2 text-xs">
-                <span className="text-gray-600">URLs de test :</span>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <button 
-                    onClick={() => setImportUrl('https://fakestoreapi.com/products/1')}
-                    className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs hover:bg-blue-200"
-                  >
-                    FakeStore (1 produit)
-                  </button>
-                  <button 
-                    onClick={() => setImportUrl('https://fakestoreapi.com/products?limit=5')}
-                    className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs hover:bg-green-200"
-                  >
-                    FakeStore (5 produits)
-                  </button>
-                  <button 
-                    onClick={() => setImportUrl('https://dummyjson.com/products/1')}
-                    className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs hover:bg-purple-200"
-                  >
-                    DummyJSON
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center my-3 text-gray-400">
-              <span className="bg-white px-3">OU</span>
-              <hr className="absolute w-full border-gray-200" style={{marginTop: '-10px', zIndex: -1}} />
-            </div>
-
-            {/* Option 2: Import par JSON */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                <i className="fas fa-code mr-1 text-green-500"></i>Coller le JSON directement
-              </label>
-              <p className="text-xs text-gray-500 mb-2">
-                Format : [{`{"title": "nom", "price": 100, "category": "categorie", "images": ["url1", "url2"], "description": "desc"}`}]
-              </p>
-              <textarea
-                value={importData}
-                onChange={(e) => setImportData(e.target.value)}
-                placeholder='[{"title": "iPhone 15", "price": 899.99, "category": "Électronique", "images": ["image1.jpg", "image2.jpg"], "description": "Nouveau smartphone"}]'
-                className="w-full h-32 p-3 border rounded-lg resize-none text-sm font-mono bg-gray-50"
-              />
-            </div>
-
-            <button
-              onClick={importProducts}
-              disabled={!importData.trim() && !importUrl.trim()}
-              className="mt-3 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center"
-            >
-              <i className="fas fa-download mr-2"></i>
-              Importer les produits
-            </button>
-          </div>
-
           <div className="bg-white p-4 rounded shadow">
             <h2 className="text-lg font-bold mb-3">
               {editingProduct ? "Modifier produit" : "Ajouter produit"}
@@ -896,32 +559,9 @@ function AdminInterface({ produits, setProduits, onLogout }) {
               
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium mb-2">
-                  <i className="fas fa-robot mr-1 text-purple-500"></i>Description du produit
+                  <i className="fas fa-align-left mr-1"></i>Description
                 </label>
-                <div className="flex gap-2 mb-2">
-                  <button
-                    onClick={generateDescription}
-                    disabled={generatingDescription || !nom}
-                    className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center"
-                  >
-                    {generatingDescription ? (
-                      <i className="fas fa-spinner fa-spin mr-2"></i>
-                    ) : (
-                      <i className="fas fa-magic mr-2"></i>
-                    )}
-                    {generatingDescription ? "Génération..." : "Générer avec IA"}
-                  </button>
-                  <span className="text-xs text-gray-500 flex items-center">
-                    Saisissez d'abord le nom du produit
-                  </span>
-                </div>
-                <textarea 
-                  placeholder="Description (HTML autorisé)" 
-                  value={description} 
-                  onChange={e => setDescription(e.target.value)} 
-                  className="border px-2 py-1 rounded w-full bg-gray-50" 
-                  rows="4"
-                />
+                <textarea placeholder="Description (HTML autorisé)" value={description} onChange={e => setDescription(e.target.value)} className="border px-2 py-1 rounded w-full" rows="3"/>
               </div>
             </div>
             <div className="mt-3 flex gap-2">

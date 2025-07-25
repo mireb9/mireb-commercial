@@ -1,48 +1,50 @@
-# 🚀 Mireb Commercial - Version Déploiement
+# Mireb Commercial
 
-Application e-commerce moderne avec interface d'administration et CRM intégré.
+## Description
+Mireb Commercial is a web application designed for managing and showcasing products. It provides an intuitive interface for both users and administrators, allowing for product browsing, detailed views, and administrative functionalities.
 
-## ✨ Fonctionnalités
+## Features
+- User authentication with a simple login interface.
+- Product management for administrators, including adding, modifying, and deleting products.
+- Detailed product views with contact forms for inquiries.
+- Responsive design with a mobile-first approach using Tailwind CSS.
+- Local storage for product data persistence.
 
-- 🛍️ **Catalogue produits** responsive avec catégories
-- 👤 **Authentification** utilisateur/admin  
-- 🔧 **Interface admin complète** avec upload d'images
-- 📊 **CRM intégré** pour gestion des leads
-- 📱 **Mobile-first** avec navigation intuitive
-- 💾 **Persistance localStorage** 
+## Installation
+To get started with the project, follow these steps:
 
-## 🔑 Accès Admin
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   ```
 
-- **Email** : `mirebshop@gmail.com`
-- **Mot de passe** : `Fiacre-19`
+2. Navigate to the project directory:
+   ```
+   cd mireb-commercial
+   ```
 
-## 🛠️ Technologies
+3. Install the dependencies:
+   ```
+   npm install
+   ```
 
-- React 18 (CDN)
-- Tailwind CSS
-- FontAwesome Icons
-- LocalStorage API
+4. Start the development server:
+   ```
+   npm start
+   ```
 
-## 📦 Structure du déploiement
+## Usage
+- Access the application in your web browser at `http://localhost:3000`.
+- Use the login interface to authenticate as an admin or a regular user.
+- Browse products, view details, and manage products if logged in as an admin.
 
-```
-deploy/
-├── index.html          # Application principale
-├── _redirects          # Configuration Netlify
-├── netlify.toml        # Optimisations Netlify  
-├── vercel.json         # Configuration Vercel (optionnel)
-└── README.md          # Documentation
-```
+## Technologies Used
+- React for building the user interface.
+- Tailwind CSS for styling.
+- Local Storage for data persistence.
 
-## 🌐 Déploiement
+## Contributing
+Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements.
 
-Cette version est optimisée pour :
-- ✅ Netlify Drop
-- ✅ Vercel
-- ✅ GitHub Pages
-- ✅ Firebase Hosting
-
----
-
-**Version** : Janvier 2025  
-**Status** : ✅ Prêt pour production
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
