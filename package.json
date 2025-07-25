@@ -1,0 +1,22 @@
+{
+  "name": "mireb-commercial",
+  "version": "1.0.0",
+  "description": "Application e-commerce Mireb avec IA et analytics",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static build ready'",
+    "start": "echo 'Static site ready'"
+  },
+  "keywords": [
+    "ecommerce",
+    "react",
+    "tailwind",
+    "ai",
+    "analytics"
+  ],
+  "author": "Mireb Commercial",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
