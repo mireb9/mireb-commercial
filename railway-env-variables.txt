@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # VARIABLES D'ENVIRONNEMENT POUR RAILWAY
 # Copiez-collez ces variables dans Railway Dashboard > Variables
 
@@ -20,3 +21,27 @@ OPENAI_API_KEY=your-openai-key-here
 
 # Frontend URL (pour CORS)
 FRONTEND_URL=https://mireb-commercial.netlify.app
+=======
+# VARIABLES D'ENVIRONNEMENT POUR RAILWAY
+# Copiez-collez ces variables dans Railway Dashboard > Variables
+
+NODE_ENV=production
+PORT=5000
+
+# MongoDB (remplacez par votre vraie connection string)
+MONGODB_URI=mongodb+srv://mirebcommercial:Fiacre2025!@mireb-commercial.xxxxx.mongodb.net/mireb-commercial?retryWrites=true&w=majority
+
+# Cloudinary (remplacez par vos vraies clés)
+CLOUDINARY_CLOUD_NAME=mireb-commercial
+CLOUDINARY_API_KEY=your-api-key-here
+CLOUDINARY_API_SECRET=your-api-secret-here
+
+# JWT Secret (générez une clé forte)
+JWT_SECRET=mireb-super-secret-key-2025-fiacre
+
+# OpenAI (optionnel pour l'IA)
+OPENAI_API_KEY=your-openai-key-here
+
+# Frontend URL (pour CORS)
+FRONTEND_URL=https://mireb-commercial.netlify.app
+>>>>>>> a7ebd8c2b3beafbb2fa4c8505a08f5b5880fc7a2

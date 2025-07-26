@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "mireb-commercial",
   "version": "1.0.0",
@@ -52,3 +53,59 @@
     "nodemon": "^3.0.2"
   }
 }
+=======
+{
+  "name": "mireb-commercial",
+  "version": "1.0.0",
+  "description": "E-commerce platform - mirebcommercial@gmail.com - Fiacre-19",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test-server.mjs",
+    "dev": "node server.mjs",
+    "simple": "node -e \"console.log('Hello Mireb Commercial!'); console.log('Account: mirebcommercial@gmail.com'); console.log('Author: Fiacre-19');\""
+  },
+  "keywords": [
+    "ecommerce",
+    "nodejs", 
+    "mireb",
+    "commercial",
+    "kinshasa",
+    "congo"
+  ],
+  "author": {
+    "name": "Fiacre-19",
+    "email": "mirebcommercial@gmail.com",
+    "location": "Kinshasa, Congo (DRC)"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirebcommercial/mireb-commercial.git"
+  },
+  "homepage": "https://mireb-commercial.netlify.app",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "cloudinary": "^1.41.3",
+    "socket.io": "^4.7.4",
+    "axios": "^1.6.2",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+>>>>>>> a7ebd8c2b3beafbb2fa4c8505a08f5b5880fc7a2

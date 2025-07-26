@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # VARIABLES D'ENVIRONNEMENT POUR VERCEL
 # Ajoutez ces variables dans Vercel Dashboard > Project Settings > Environment Variables
 
@@ -19,3 +20,26 @@ OPENAI_API_KEY=your-openai-key-here
 
 # Frontend URL (sera votre URL Vercel)
 FRONTEND_URL=https://mireb-commercial-4pac-efrkhqjev-mcs-projects-225b2b36.vercel.app
+=======
+# VARIABLES D'ENVIRONNEMENT POUR VERCEL
+# Ajoutez ces variables dans Vercel Dashboard > Project Settings > Environment Variables
+
+NODE_ENV=production
+
+# MongoDB (remplacez par votre vraie connection string)
+MONGODB_URI=mongodb+srv://mirebcommercial:Fiacre2025!@mireb-commercial.xxxxx.mongodb.net/mireb-commercial?retryWrites=true&w=majority
+
+# Cloudinary (remplacez par vos vraies clés)
+CLOUDINARY_CLOUD_NAME=mireb-commercial
+CLOUDINARY_API_KEY=your-api-key-here
+CLOUDINARY_API_SECRET=your-api-secret-here
+
+# JWT Secret
+JWT_SECRET=mireb-super-secret-key-2025-fiacre
+
+# OpenAI (optionnel pour l'IA)
+OPENAI_API_KEY=your-openai-key-here
+
+# Frontend URL (sera votre URL Vercel)
+FRONTEND_URL=https://mireb-commercial.vercel.app
+>>>>>>> a7ebd8c2b3beafbb2fa4c8505a08f5b5880fc7a2
