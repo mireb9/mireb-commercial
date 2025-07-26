@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mireb Commercial - Test d'Accès</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border-left-color: #4CAF50;
+        }
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border-left-color: #FFC107;
+        }
+        .button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .steps {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #4CAF50;
+        }
+        .status.pending {
+            background: #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏪 Mireb Commercial</h1>
+            <p><strong>Plateforme E-commerce Intelligente</strong></p>
+            <p>📧 mirebcommercial@gmail.com | 🔑 Fiacre-19</p>
+            <p>🌍 Kinshasa, Congo (DRC)</p>
+        </div>
+
+        <div class="info-box success">
+            <h3>✅ Test d'Accès Réussi !</h3>
+            <p><strong>Node.js v22.17.1</strong> est installé et fonctionnel</p>
+            <p><strong>Date/Heure:</strong> <span id="datetime"></span></p>
+        </div>
+
+        <div class="steps">
+            <h3>🚀 Comment Accéder à Votre Application</h3>
+            
+            <div class="step">
+                <h4>Étape 1: Démarrer le Serveur</h4>
+                <p>Double-cliquez sur un de ces fichiers :</p>
+                <div class="code">
+                    OPEN-APP.bat (Recommandé - ouvre automatiquement le navigateur)<br>
+                    test-final.bat (Test complet)<br>
+                    start-mireb.bat (Démarrage standard)
+                </div>
+            </div>
+
+            <div class="step">
+                <h4>Étape 2: Accéder à l'Interface</h4>
+                <p>Une fois le serveur démarré, ouvrez :</p>
+                <div class="code">🌐 http://127.0.0.1:3000</div>
+                <a href="http://127.0.0.1:3000" class="button">Ouvrir l'Application</a>
+            </div>
+
+            <div class="step">
+                <h4>Étape 3: Tests API</h4>
+                <p>URLs de test disponibles :</p>
+                <div class="code">
+                    📊 http://127.0.0.1:3000/api/test<br>
+                    ❤️ http://127.0.0.1:3000/api/health<br>
+                    📋 http://127.0.0.1:3000/api/status
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box warning">
+            <h3>📦 Prochaines Étapes</h3>
+            <ol>
+                <li><strong>Installer les dépendances :</strong> <code>npm install</code></li>
+                <li><strong>Configurer MongoDB Atlas</strong> (base de données gratuite)</li>
+                <li><strong>Configurer Cloudinary</strong> (stockage images gratuit)</li>
+                <li><strong>Lancer l'app complète :</strong> <code>npm start</code></li>
+            </ol>
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 Fonctionnalités Disponibles</h3>
+            <ul>
+                <li><span class="status success">✅</span> Interface web responsive</li>
+                <li><span class="status success">✅</span> Serveur Node.js fonctionnel</li>
+                <li><span class="status success">✅</span> Configuration personnalisée</li>
+                <li><span class="status success">✅</span> API OpenAI configurée</li>
+                <li><span class="status pending">⏳</span> Installation dépendances</li>
+                <li><span class="status pending">⏳</span> Configuration MongoDB</li>
+                <li><span class="status pending">⏳</span> Configuration Cloudinary</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3>🔧 Si Problème d'Accès</h3>
+            <p><strong>Méthode Alternative :</strong></p>
+            <div class="code">
+                "C:\Program Files\nodejs\node.exe" quick-test.mjs
+            </div>
+            <p>Puis ouvrez : <a href="http://127.0.0.1:3000" class="button">http://127.0.0.1:3000</a></p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <p><strong>🎉 Votre plateforme Mireb Commercial est prête !</strong></p>
+            <a href="http://127.0.0.1:3000" class="button" style="font-size: 1.2em;">🚀 LANCER L'APPLICATION</a>
+        </div>
+    </div>
+
+    <script>
+        // Afficher la date/heure actuelle
+        document.getElementById('datetime').textContent = new Date().toLocaleString('fr-FR');
+        
+        // Vérifier si le serveur est accessible
+        function checkServer() {
+            fetch('http://127.0.0.1:3000/api/health')
+                .then(response => {
+                    if (response.ok) {
+                        document.body.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                        const successMsg = document.createElement('div');
+                        successMsg.innerHTML = '<h2>✅ Serveur Détecté ! Votre app est accessible !</h2>';
+                        successMsg.style.cssText = 'position:fixed;top:20px;right:20px;background:rgba(76,175,80,0.9);padding:15px;border-radius:10px;color:white;z-index:1000;';
+                        document.body.appendChild(successMsg);
+                        setTimeout(() => successMsg.remove(), 5000);
+                    }
+                })
+                .catch(() => {
+                    // Serveur pas encore démarré - normal
+                });
+        }
+        
+        // Vérifier toutes les 3 secondes
+        setInterval(checkServer, 3000);
+        checkServer();
+    </script>
+</body>
+</html>

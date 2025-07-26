@@ -1,0 +1,22 @@
+# VARIABLES D'ENVIRONNEMENT POUR RAILWAY
+# Copiez-collez ces variables dans Railway Dashboard > Variables
+
+NODE_ENV=production
+PORT=5000
+
+# MongoDB (remplacez par votre vraie connection string)
+MONGODB_URI=mongodb+srv://mirebcommercial:Fiacre2025!@mireb-commercial.wbka94.mongodb.net/mireb-commercial?retryWrites=true&w=majority&appName=mireb-commercial
+
+# Cloudinary (remplacez par vos vraies clés)
+CLOUDINARY_CLOUD_NAME=dwogv9nme
+CLOUDINARY_API_KEY=654455212261562
+CLOUDINARY_API_SECRET=C7gUaKioRvXDHvAlpWl0XcRfDnc
+
+# JWT Secret (générez une clé forte)
+JWT_SECRET=mireb-super-secret-key-2025-fiacre
+
+# OpenAI (optionnel pour l'IA)
+OPENAI_API_KEY=your-openai-key-here
+
+# Frontend URL (pour CORS)
+FRONTEND_URL=https://mireb-commercial.netlify.app

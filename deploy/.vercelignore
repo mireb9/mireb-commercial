@@ -1,0 +1,6 @@
+README.md
+netlify.toml
+_redirects
+*.log
+.DS_Store
+Thumbs.db
